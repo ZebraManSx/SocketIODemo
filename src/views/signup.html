@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <title>Sign up to MarcusCode</title>
+</head>
+
+
+<body>
+    <textarea id="reg_response" name="w3review" rows="4" cols="50"></textarea>
+    <hr>
+    <form id="form" action="">
+        <div>user-name</div><input id="user" autocomplete="off" type='text'/>
+        <div>password</div><input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+    var socket = io();
+
+    var messages = document.getElementById('messages');
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+    var user = document.getElementById('user');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+            socket.emit('register request',"{username:"+user.value+",password:"+input.value+"}");
+            input.value = '';
+            user.value = '';
+        }
+    });
+
+    socket.on('register response', function(msg) {
+        var item = document.getElementById('reg_response');
+        item.innerText = msg; 
+    });
+    </script>
+</body>
+
+</html>
